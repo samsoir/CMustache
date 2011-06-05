@@ -8,18 +8,10 @@ or for loops. Instead their are only tags.
 CMustache provides a C library and command line interface for processing
 Mustache templates.
 
-For more please read [the manual](http://mustache.github.com/mustache.5.html).
+For more information please read [the Mustache manual](http://mustache.github.com/mustache.5.html).
 
 License
 =======
-
-Sam de Freyssinet
-Adapter Pattern Limited
-2011
-
-In the original BSD license, both occurrences of the phrase "COPYRIGHT HOLDERS AND CONTRIBUTORS" in the disclaimer read "REGENTS AND CONTRIBUTORS".
-
-Here is the license template:
 
 Copyright (c) 2011, Adapter Pattern Limited
 All rights reserved.
