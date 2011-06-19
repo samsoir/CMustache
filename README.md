@@ -3,7 +3,7 @@ CMustache
 
 The C Mustache Library for "logic-less templating". Mustache is a very simple
 template language designed to be logic less- i.e. no if statements, else clauses
-or for loops. Instead their are only tags.
+or for loops. Instead there are only tags.
 
 CMustache provides a C library and command line interface for processing
 Mustache templates.

@@ -32,7 +32,7 @@
 */
 int main (int argc, char **argv)
 {
-	int status = mustache_init();
+	int status = mustache_init("../example/test");
 
 	exit(status);
 }

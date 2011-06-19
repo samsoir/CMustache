@@ -25,12 +25,19 @@
 | POSSIBILITY OF SUCH DAMAGE.                                                |
 +----------------------------------------------------------------------------+
 */
+#ifndef __MUSTACHE_H__
+#define __MUSTACHE_H__
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
+#include <limits.h>
 
-/* Buffer size maximum */
-#define MUSTACHE_MAX_BUFFER         10000
+/* Handles non-POSIX clients */
+#ifndef LINE_MAX
+#define LINE_MAX                    2048
+#endif
 
 /* Mustache tokens */
 #define MUSTACHE_ESCAPE_CHARACTER   "="
@@ -45,8 +52,16 @@
 
 #define MUSTACHE_TEMPLATE_EXTENSION ".mustache"
 
-int mustache_init();
-char * mustache_format_tmplname (char *filename);
+/* Type of mustache block */
+typedef enum _mustache_type {
+	MU_TYPE_ROOT,
+	MU_TYPE_BLOCK_TEXT,
+	MU_TYPE_BLOCK_VARIABLE,
+	MU_TYPE_BLOCK_VALID,
+	MU_TYPE_BLOCK_INVALID,
+	MU_TYPE_COMMENT,
+	MU_TYPE_PARTIAL
+} mustache_type;
 
 /* Contains the mustache delimeters */
 struct mustache_delimiter {
@@ -55,39 +70,25 @@ struct mustache_delimiter {
 	char *close_block;
 };
 
-/* Type of mustache block */
-typedef enum mustache_type {
-	MU_TYPE_BLOCK_VALID,
-	MU_TYPE_BLOCK_INVALID,
-	MU_TYPE_COMMENT,
-	MU_TYPE_PARTIAL
-} mustache_type;
-
-/* Hash node */
-struct mustache_hash_value_node {
-	/* Pointer back to root node */
-	struct mustache_hash_value_node *root;
-
-	/* Properties */
-	char *key;
-	char *value;
-
-	/* Child nodes */
-	size_t num_child_nodes;
-	struct mustache_hash_value_node **nodes;
-};
-
 /* Mustache block */
 struct mustache_template_block {
 	/* Pointer back to root block */
 	struct mustache_template_block *root;
+	struct mustache_template_block *next;
 
 	/* Properties */
 	char *key;
 	char *value;
 	mustache_type *type;
 
-	/* Child blocks */
-	size_t num_child_blocks;
-	struct mustache_template_block **blocks;
+	struct mustache_template_block *parent;
+	struct mustache_template_block *child;
 };
+
+char *mustache_format_tmplate_name (char *filename);
+struct mustache_template_block *create_mustache_template_node(
+	mustache_type *type);
+size_t mustache_get_line(char **line_ptr, size_t *n, FILE *stream);
+int mustache_init(char *filename);
+
+#endif /* __MUSTACHE_H__ */
